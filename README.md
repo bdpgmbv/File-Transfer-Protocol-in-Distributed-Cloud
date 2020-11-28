@@ -18,22 +18,12 @@
 * This interface should extend the Remote interface and the method prototype within the interface should throw the RemoteException.
 ```
 public interface IServer extends Remote {
-
-	public void get(String f) throws IOException, FileNotFoundException,
-			RemoteException;
-
-	public void put(String f) throws IOException, FileNotFoundException,
-			RemoteException;
-
+	public void get(String f) throws IOException, FileNotFoundException, RemoteException;
+	public void put(String f) throws IOException, FileNotFoundException, RemoteException;
 	public String pwd() throws RemoteException;
-
 	public void cd(String d) throws IOException, RemoteException;
-
 	public String[] dir() throws RemoteException;
-
 	public void port(InetSocketAddress s) throws RemoteException;
-
 	public InetSocketAddress pasv() throws IOException, RemoteException;
-
 }
 ```

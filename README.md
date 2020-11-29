@@ -72,10 +72,10 @@ private static class GetThread implements Runnable {
 			}
 			is.close();
 			os.close();
-	} catch (IOException e) {
-		msg("Exception: " + e);
-		e.printStackTrace();
+		} catch (IOException e) {
+			msg("Exception: " + e);
+			e.printStackTrace();
+		}
 	}
-}
 }
 ```

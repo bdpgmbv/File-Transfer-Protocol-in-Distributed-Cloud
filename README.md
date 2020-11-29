@@ -17,6 +17,7 @@
 * The first thing to do is to create an interface which will provide the description of the methods that can be invoked by remote clients. 
 * This interface should extend the Remote interface and the method prototype within the interface should throw the RemoteException.
 ```
+IServer.java
 public interface IServer extends Remote {
 	public void get(String f) throws IOException, FileNotFoundException, RemoteException;
 	public void put(String f) throws IOException, FileNotFoundException, RemoteException;
@@ -26,4 +27,34 @@ public interface IServer extends Remote {
 	public void port(InetSocketAddress s) throws RemoteException;
 	public InetSocketAddress pasv() throws IOException, RemoteException;
 }
+
+IServerFactory.java
+public interface IServerFactory extends Remote {
+	public IServer createServer() throws RemoteException;
+}
+```
+
+### Step 2: Implementing the remote interface
+* The next step is to implement the remote interface. To implement the remote interface, the class should extend to UnicastRemoteObject class of java.rmi package. 
+* Also, a default constructor needs to be created to throw the java.rmi.RemoteException from its parent constructor in class.
+
+ServerFactory.java - Class Variables: Host(IP Address), Port, Path Prefix = '/'. Functions: 3 argument constructor (ServerFactory(InetAddress h, int port, String p) ) and Function to create a server proxy (IServer createServer()).
+
+
+
+```
+private ServerSocket dataChan = null;
+private FileOutputStream file = null;
+
+Socket xfer = dataChan.accept(); // Listens for a connection to be made to this socket and accepts it. Returns the new Socket
+InputStream is = new FileInputStream(file); // Creates a FileInputStream (A FileInputStream obtains input bytes from a file in a file system) by opening a 							connection to an actual file, the file named by the File object file in the file system.
+OutputStream os = xfer.getOutputStream(); // an output stream for writing bytes to this socket.
+byte[] buf = new byte[512];
+int nbytes = is.read(buf,0,512); Reads up to len(512) bytes of data from the input stream into an array of bytes. Parameters: buf - The buffer into which the data is read, 0 - the start offset in array buf at which the data is written, 512 - the maximum number of bytes to read. Returns: the total number of bytes read into the buffer.
+while(nbytes > 0){
+	os.write(buf,0,nbytes);
+	nbytes = is.read(buf,0,512);
+}
+is.close();
+os.close();
 ```

@@ -47,7 +47,7 @@ private ServerSocket dataChan = null;
 private FileOutputStream file = null;
 
 Socket xfer = dataChan.accept(); // Listens for a connection to be made to this socket and accepts it. Returns the new Socket
-InputStream is = new FileInputStream(file); // Creates a FileInputStream (A FileInputStream obtains input bytes from a file in a file system) by opening a 							connection to an actual file, the file named by the File object file in the file system.
+InputStream is = new FileInputStream(file); // Creates a FileInputStream (A FileInputStream obtains input bytes from a file in a file system) by opening a connection to an actual file, the file named by the File object file in the file system.
 OutputStream os = xfer.getOutputStream(); // an output stream for writing bytes to this socket.
 byte[] buf = new byte[512];
 int nbytes = is.read(buf,0,512); Reads up to len(512) bytes of data from the input stream into an array of bytes. Parameters: buf - The buffer into which the data is read, 0 - the start offset in array buf at which the data is written, 512 - the maximum number of bytes to read. Returns: the total number of bytes read into the buffer.

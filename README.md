@@ -79,3 +79,19 @@ private static class GetThread implements Runnable {
 	}
 }
 ```
+
+```
+if (mode == Mode.ACTIVE) {
+	Socket xfer = new Socket (clientSocket.getAddress(), clientSocket.getPort()); // clientSocket.getAddress() - 0.0.0.0, clientSocket.getPort() - 64181, Socket(InetAddress address, int port) - Creates a stream socket and connects it to the specified port number at the specified IP address.
+	InputStream in = new FileInputStream(path()+file); // path() - /Users/VyshaliPrabananthLal/tmp/cs549/ftp-test/root
+	OutputStream os = xfer.getOutputStream();
+	byte[] buf = new byte[512];
+	int nbytes = is.read(buf,0,512);
+	while(nbytes > 0){
+		os.write(buf,0,nbytes);
+		nbytes = is.read(buf,0,512);
+	}
+	is.close();
+	os.close();
+}
+```

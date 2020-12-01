@@ -137,4 +137,9 @@ client side :
 * Now we can go ahead and tell the server, Ok now you need to make a connection request to me, and start transfering contents of the file. 
 Server Side:
 * If the server is in active mode, server makes the connection request to the client using the client socket address that was provided as part of the PORT operation, which we should have used before this, to put the server in active mode. 
-* So in Active Mode the client knows the server socket address to connect to 
+* So in Active Mode the Server knows the client socket address to connect to. Here is where it establishes that connection.
+```
+Socket xfer = new Socket (clientSocket.getAddress(), clientSocket.getPort());
+```
+* Once this is done it opens the file for input on a local server disk and starts transferring the content from the input file to the output stream that underlies this socket connection. 
+

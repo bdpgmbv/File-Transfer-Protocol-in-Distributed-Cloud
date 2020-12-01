@@ -1,10 +1,10 @@
-`##### Quick Info: 
-* FTP Server can run in active/passive mode.`
-`###### Server in Active Mode
-* Client uses the PORT command to put the FTP Server into active mode. Eg, Server, when it wants to download a file, will connect to a client socket to eastablish a channel and then download the file through that channel. 
-`* The Client tells the server to go into active mode with the PORT command, and it specifies the Internet Socket Address which the server will then use to connect to the client socket. 
-###### Server in Passive Mode
-* When the server runs in passive mode it waits for the client to connect with on its socket inorder to establish a data channel for communication, given a file transfer.
+`##### Quick Info:` 
+`* FTP Server can run in active/passive mode.`
+`###### Server in Active Mode`
+`* Client uses the PORT command to put the FTP Server into active mode. Eg, Server, when it wants to download a file, will connect to a client socket to eastablish a channel and then download the file through that channel.` 
+`* The Client tells the server to go into active mode with the PORT command, and it specifies the Internet Socket Address which the server will then use to connect to the client socket.` 
+`###### Server in Passive Mode`
+`* When the server runs in passive mode it waits for the client to connect with on its socket inorder to establish a data channel for communication, given a file transfer.`
 `* Client can put the server into passive mode by executing the PASV command and the server returns the socket on which it is listening for the client connection request.`
 
 

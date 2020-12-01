@@ -8,10 +8,11 @@
 * Client can put the server into passive mode by executing the PASV command and the server returns the socket on which it is listening for the client connection request. 
 
 
-### Step 1: IServer.java
-* An Interface for a remote RMI server object (IServer Interface extends the Remote Interface). 
+### Step 1: Interface for a remote RMI server object
+* IServer Interface extends the Remote Interface.
 * Below are the Operations that are available to me in the remote FTP server object (I define these operations in the IServer.java Interface).
 ```
+IServer.java
 public interface IServer extends Remote {
 	
 	public void get(String f) throws IOException, FileNotFoundException,
@@ -37,6 +38,7 @@ public interface IServer extends Remote {
 * So, we have a way for creating a new server object everytime the client comes in. 
 * Here, I follow a standard design pattern for these RMI systems is for the clients to actually get access not to a server object but to a factory object that will create server objects. 
 ```
+IServerFactory.java
 public interface IServerFactory extends Remote {
 	public IServer createServer() throws RemoteException;
 }

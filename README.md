@@ -84,5 +84,11 @@ GET operation Client Side: Passive Mode  - For doing a file download there are 2
 * The client does first of all is it issues a GET operation which is not to actually transfer file content, its just to tell the server I want to do a file Download.
 * In response to that the server will start listening for a connection request from the client to establish a TCP/IP socket for Data transfer.
 
-GET operation Server Side - The whole point about this GET operation is really just to tell the server start listening for a connection request for a Data Channel and when you get the connection request, establish the Data Channel and then transfer the contents of this file. 
-*
+GET operation Server Side: Passive Mode - The whole point about this GET operation is really just to tell the server start listening for a connection request for a Data Channel and when you get the connection request, establish the Data Channel and then transfer the contents of this file. 
+* So what the server wants to do is return back from the client, letting the client know that it is listening for connection request. 
+* The problem is when the client returns back to the server its finished, its done, so there is nothing left around to listen for these connection request from the client. Before the server returns, it needs to leave somthing behind that will for connection request from the client.
+* So what it has to do is it has to fork a `new Thread` of control or a lightweight process, this is basically starting up a execution, very lightweight execution of the same program - actually executing a specific piece of code that will hang around after the server returns back to the client and it will listen for the connection request from the client. 
+
+### Step 5: What does the Thread do ?
+* Its going to wait for the client request, a data channel connection, once the data channel is established, it will then transfer the contents of the file to the client. 
+* This thread takes two piece of information - ServerSocket in which you should listen for data channel connection request from the client. Other piece of information it needs is the file that needs to be downloaded to the client. This is saved as a private field as type `FileInputStream`, actually what happens is we open the file for input, this is the file on the servers local disk, which we open for input, and we pass that to this lightweight thread. 

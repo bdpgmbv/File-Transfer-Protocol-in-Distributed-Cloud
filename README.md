@@ -91,4 +91,17 @@ GET operation Server Side: Passive Mode - The whole point about this GET operati
 
 ### Step 5: What does the Thread do ?
 * Its going to wait for the client request, a data channel connection, once the data channel is established, it will then transfer the contents of the file to the client. 
-* This thread takes two piece of information - ServerSocket in which you should listen for data channel connection request from the client. Other piece of information it needs is the file that needs to be downloaded to the client. This is saved as a private field as type `FileInputStream`, actually what happens is we open the file for input, this is the file on the servers local disk, which we open for input, and we pass that to this lightweight thread. 
+* This thread takes two piece of information - ServerSocket in which you should listen for data channel connection request from the client. Other piece of information it needs is the file that needs to be downloaded to the client. This is saved as a private field as type `FileInputStream`, actually what happens is we open the file for input, this is the file on the servers local disk, that we open for input, and we pass that to this lightweight thread. 
+* So once we establish a data connection with the client in response to the client request, we will then ship the bytes for the file contents along that channel downloaded to the client. WHEN THE SERVER IS IN PASSIVE MODE, WHEN IT GETS THE GET REQUEST, IT STARTS THAT THREAD, THAT THREAD IS NOW LISTENING FOR CONNECTION REQUEST FROM CLIENT.
+
+Back to client side: The client is done with the server.get() operation, start the server waiting for connection request. We are going to do - write the contents of the remote file to a file on the clients local file system, So we have to open up this output file `FileOutputStream`, creating a output file on the clients file system, and now we have to make a connection request to the server to establish a data channel 
+```
+Socket xfer = new Socket(serverAddress, serverSocket.getPort());
+```
+This piece of code actually establishes a socket connection to the server for the data channel. Once we established that data channel, we then trasnfer the contents of the file.
+```
+```
+
+### Difficulties Faced During Development
+GETTING THE SERVER TO LAUNCH A THREAD BEFORE RETURNS TO THE CLIENT, AND THAT THREAD WAITS FOR CONNECTION REQUEST FROM THE CLIENT. 
+

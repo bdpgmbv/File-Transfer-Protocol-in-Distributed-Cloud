@@ -78,6 +78,7 @@ public class ServerFactory extends UnicastRemoteObject implements
 ### Step 4: How we do File Transfer
 GET operation Client Side: Passive Mode  - For doing a file download there are 2 cases, whether the server is in Passive Mode or Active Mode
 * In Passive Mode when we start a file transfer, the server is going to listen on a Connection Request Channel for a request from client for a Data Channel. Once that connection is establised, the server will transfer the contents of the file over that data channel. Client will then get those contents and write them to a disk in a so called file system.
+
 `NOTE: its no good the client trying to make a connection to the server straightaway because the server doesnt start listening, although the connection request channel has been created, the server is not listening on that channel for connection request until a client initiates a file transfer by using GET/PUT`
 * Client has to first of all notify the server that it wishes to do a file transfer, for eg - Using GET I want to do a file download. 
 * The client does first of all is it issues a GET operation which is not to actually transfer file content, its just to tell the server I want to do a file Download.

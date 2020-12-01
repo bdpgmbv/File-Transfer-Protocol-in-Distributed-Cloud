@@ -8,7 +8,7 @@
 * Client can put the server into passive mode by executing the PASV command and the server returns the socket on which it is listening for the client connection request. 
 
 
-#### Step 1: IServer.java
+### Step 1: IServer.java
 * An Interface for a remote RMI server object (IServer Interface extends the Remote Interface). 
 * Below are the Operations that are available to me in the remote FTP server object (I define these operations in the IServer.java Interface).
 ```
@@ -32,7 +32,7 @@ public interface IServer extends Remote {
 * One thing we cannot do: We cannot have several clients interacting with the same server object. The problem is the server is maintaining the internal state about the client, In Particular, its remembering the current directory where the client is on the remote server. 
 * If we have two clients interacting with the object simultaneously, obviously things will get confusing as they keep changing directories, and obviously there are privacy concerns as well.
 
-#### Step 2: Create New Server Object for each Client
+### Step 2: Create New Server Object for each Client
 * So, what do we do is whenever the client connects, we create a new server object just for that client. For each client session there is a seperate server object handling that client session. 
 * So, we have a way for creating a new server object everytime the client comes in. 
 * Here, I follow a standard design pattern for these RMI systems is for the clients to actually get access not to a server object but to a factory object that will create server objects. 

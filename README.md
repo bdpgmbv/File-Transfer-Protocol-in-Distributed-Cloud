@@ -79,4 +79,4 @@ GET operation Client Side - For doing a file download there are 2 cases, whether
 
 `NOTE: its no good the client trying to make a connection to the server straightaway because the server doesnt start listening, although the connection request channel has been created, the server is not listening on that channel for connection request until a client initiates a file transfer by using GET/PUT`
 
-* Client has to first of all notify the server that it wishes to do a file transfer, for eg - Using GET i want to do a file download. 
+* Client has to first of all notify the server that it wishes to do a file transfer, for eg - Using GET I want to do a file download. 

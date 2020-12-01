@@ -1,3 +1,4 @@
+```
 ##### Quick Info:
 * FTP Server can run in active/passive mode.
 ###### Server in Active Mode
@@ -6,6 +7,7 @@
 ###### Server in Passive Mode
 * When the server runs in passive mode it waits for the client to connect with on its socket inorder to establish a data channel for communication, given a file transfer.
 * Client can put the server into passive mode by executing the PASV command and the server returns the socket on which it is listening for the client connection request.
+```
 
 
 ### Step 1: Interface for a remote RMI server object

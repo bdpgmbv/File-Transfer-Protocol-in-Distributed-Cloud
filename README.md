@@ -33,6 +33,7 @@ public interface IServer extends Remote {
 * One thing we cannot do: We cannot have several clients interacting with the same server object. The problem is the server is maintaining the internal state about the client, In Particular, its remembering the current directory where the client is on the remote server. 
 * If we have two clients interacting with the object simultaneously, obviously things will get confusing as they keep changing directories, and obviously there are privacy concerns as well.
 
+
 ### Step 2: Create New Server Object for each Client
 * So, what do we do is whenever the client connects, we create a new server object just for that client. For each client session there is a seperate server object handling that client session. 
 * So, we have a way for creating a new server object everytime the client comes in. 
@@ -44,4 +45,42 @@ public interface IServerFactory extends Remote {
 }
 
 ```
-###### Protocol for Client connecting to the FTP server: First we go to a named service, and we will use the RMI registry service for the named service. Thus we first go to the Registry Service, and from the registry service we do a lookup on the name of the server, getting back ServerFactory object. And now we have one method that can be called on the ServerFactory Object - createServer() which will create a new server object. 
+###### Protocol for Client connecting to the FTP server: First we go to a named service, and we will use the RMI registry service for the named service. Thus we first go to the Registry Service, and from the registry service we do a lookup on the name of the server, getting back ServerFactory object. And now we have one method that can be called on the ServerFactory Object - createServer() which will create a new server object.
+
+
+### Step 3: Creating Server
+```
+public class ServerFactory extends UnicastRemoteObject implements
+		IServerFactory {
+	private String pathPrefix = "/";
+	private InetAddress host; //Specify host (IP address) for multi-homed hosts.
+	private int serverPort; //Specify port of server for allowing access through a firewall.
+	static final long serialVersionUID = 0L;
+
+	public ServerFactory(InetAddress h, int port, String p) throws RemoteException {
+		super(port);
+		this.host = h;
+		this.serverPort = port;
+		this.pathPrefix = p;
+	}
+
+	public IServer createServer() throws RemoteException {
+		return new Server(host, serverPort, pathPrefix);
+	}
+}
+```
+* @Params: pathPrefix: Registry has Internal State, path in the file system to which you are allowing clients access on the server file system. 
+
+###### All RMI Server Classes extends UnicastRemoteObject - it has all the functionalities and the hidden internal state that you need for RMI Server Object. Here we have 2 RMI Server Classes - ServerFactory.java, Server.java
+
+### Step 4: How we do File Transfer
+* Server goes into Active or Passive Mode. 
+|						|
+|						|
+|----------------------------------------------	|
+|						|	
+|						|	
+|						|
+|						|
+|						|
+|						|

@@ -30,7 +30,7 @@ public interface IServer extends Remote {
 ```
 * Note: Configured all of the methods to throw RemoteException, because network failure can happen on anyone of these methods. 
 
-##### Notes - Stateful Client Server Interaction 
+`Notes - Stateful Client Server Interaction` 
 * When you are interacting with the server, you are interacting with a RMI Object that implements this interface.
 * One thing we cannot do: We cannot have several clients interacting with the same server object. The problem is the server is maintaining the internal state about the client, In Particular, its remembering the current directory where the client is on the remote server. 
 * If we have two clients interacting with the object simultaneously, obviously things will get confusing as they keep changing directories, and obviously there are privacy concerns as well.

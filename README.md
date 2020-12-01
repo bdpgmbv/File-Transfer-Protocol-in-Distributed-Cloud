@@ -76,9 +76,34 @@ public class ServerFactory extends UnicastRemoteObject implements
 ### Step 4: How we do File Transfer
 * Server goes into Active or Passive Mode. 
 
-| Tables        								   | Are         								  | 
+| Client.java        								   | Server.java         							  | 
 | -------------------------------------------------------------------------------- |:----------------------------------------------------------------------------:| 
-| Tables        								   | Are         								  | 
+| public void get(String[] inputs) {
+			if (inputs.length == 2) {
+				try {
+					/*
+					 * Client side code for the server in the passive mode. 
+					 */
+					if (mode == Mode.PASSIVE) {
+						svr.get(inputs[1]);
+						FileOutputStream f = new FileOutputStream(inputs[1]);
+						Socket xfer = new Socket(serverAddress, serverSocket.getPort());
+						/*
+						 * TODO: connect to server socket to transfer file.
+						 */
+					} else if (mode == Mode.ACTIVE) {
+						FileOutputStream f = new FileOutputStream(inputs[1]);
+						new Thread(new GetThread(dataChan, f)).start();
+						svr.get(inputs[1]);
+					} else {
+						msgln("GET: No mode set--use port or pasv command.");
+					}
+				} catch (Exception e) {
+					err(e);
+				}
+			}
+		}
+       								   | Are         								  | 
 | Tables        								   | Are         								  | 
 | Tables        								   | Are         								  | 
 | Tables        								   | Are         								  | 

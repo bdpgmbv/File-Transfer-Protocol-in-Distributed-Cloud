@@ -45,7 +45,7 @@ public interface IServerFactory extends Remote {
 }
 
 ```
-###### Protocol for Client connecting to the FTP server: First we go to a named service, and we will use the RMI registry service for the named service. Thus we first go to the Registry Service, and from the registry service we do a lookup on the name of the server, getting back ServerFactory object. And now we have one method that can be called on the ServerFactory Object - createServer() which will create a new server object.
+`Protocol for Client connecting to the FTP server: First we go to a named service, and we will use the RMI registry service for the named service. Thus we first go to the Registry Service, and from the registry service we do a lookup on the name of the server, getting back ServerFactory object. And now we have one method that can be called on the ServerFactory Object - createServer() which will create a new server object.`
 
 
 ### Step 3: Creating Server
@@ -71,7 +71,7 @@ public class ServerFactory extends UnicastRemoteObject implements
 ```
 * @Params: pathPrefix: Registry has Internal State, path in the file system to which you are allowing clients access on the server file system. 
 
-###### All RMI Server Classes extends UnicastRemoteObject - it has all the functionalities and the hidden internal state that you need for RMI Server Object. Here we have 2 RMI Server Classes - ServerFactory.java, Server.java
+`All RMI Server Classes extends UnicastRemoteObject - it has all the functionalities and the hidden internal state that you need for RMI Server Object. Here we have 2 RMI Server Classes - ServerFactory.java, Server.java`
 
 ### Step 4: How we do File Transfer
 GET operation Client Side - For doing a file download there are 2 cases, whether the server is in Passive Mode or Active Mode

@@ -13,6 +13,7 @@
 * Below are the Operations that are available to me in the remote FTP server object (I define these operations in the IServer.java Interface).
 ```
 public interface IServer extends Remote {
+	
 	public void get(String f) throws IOException, FileNotFoundException,
 			RemoteException;
 	public void put(String f) throws IOException, FileNotFoundException,
@@ -34,3 +35,11 @@ public interface IServer extends Remote {
 #### Step 2: Create New Server Object for each Client
 * So, what do we do is whenever the client connects, we create a new server object just for that client. For each client session there is a seperate server object handling that client session. 
 * So, we have a way for creating a new server object everytime the client comes in. 
+* Here, I follow a standard design pattern for these RMI systems is for the clients to actually get access not to a server object but to a factory object that will create server objects. 
+```
+public interface IServerFactory extends Remote {
+	public IServer createServer() throws RemoteException;
+}
+
+```
+###### Protocol for Client connecting to the FTP server: First we go to a named service, and we will use the RMI registry service for the named service. Thus we first go to the Registry Service, and from the registry service we do a lookup on the name of the server, getting back ServerFactory object. And now we have one method that can be called on the ServerFactory Object - createServer() which will create a new server object. 

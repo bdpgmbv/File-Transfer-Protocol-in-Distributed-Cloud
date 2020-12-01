@@ -76,9 +76,12 @@ public class ServerFactory extends UnicastRemoteObject implements
 `All RMI Server Classes extends UnicastRemoteObject - it has all the functionalities and the hidden internal state that you need for RMI Server Object. Here we have 2 RMI Server Classes - ServerFactory.java, Server.java`
 
 ### Step 4: How we do File Transfer
-GET operation Client Side - For doing a file download there are 2 cases, whether the server is in Passive Mode or Active Mode
-* Passive Mode - In Passive Mode when we start a file transfer, the server is going to listen on a Connection Request Channel for a request from client for a Data Channel. Once that connection is establised, the server will transfer the contents of the file over that data channel. Client will then get those contents and write them to a disk in a so called file system.
-
+GET operation Client Side: Passive Mode  - For doing a file download there are 2 cases, whether the server is in Passive Mode or Active Mode
+* In Passive Mode when we start a file transfer, the server is going to listen on a Connection Request Channel for a request from client for a Data Channel. Once that connection is establised, the server will transfer the contents of the file over that data channel. Client will then get those contents and write them to a disk in a so called file system.
 `NOTE: its no good the client trying to make a connection to the server straightaway because the server doesnt start listening, although the connection request channel has been created, the server is not listening on that channel for connection request until a client initiates a file transfer by using GET/PUT`
-
 * Client has to first of all notify the server that it wishes to do a file transfer, for eg - Using GET I want to do a file download. 
+* The client does first of all is it issues a GET operation which is not to actually transfer file content, its just to tell the server I want to do a file Download.
+* In response to that the server will start listening for a connection request from the client to establish a TCP/IP socket for Data transfer.
+
+GET operation Server Side - The whole point about this GET operation is really just to tell the server start listening for a connection request for a Data Channel and when you get the connection request, establish the Data Channel and then transfer the contents of this file. 
+*

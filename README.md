@@ -129,6 +129,7 @@ private static class GetThread implements Runnable {
     }
 ```
 
+### Step 6: File transfer
 `Back to client side`: The client is done with the server.get() operation, start the server waiting for connection request. We are going to do - write the contents of the remote file to a file on the clients local file system, So we have to open up this output file `FileOutputStream`, creating a output file on the clients file system, and now we have to make a connection request to the server to establish a data channel 
 ```
 Socket xfer = new Socket(serverAddress, serverSocket.getPort());

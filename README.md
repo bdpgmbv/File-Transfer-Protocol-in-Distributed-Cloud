@@ -109,6 +109,22 @@ private static class GetThread implements Runnable {
     	private FileInputStream file = null;
     	public GetThread (ServerSocket s, FileInputStream f) { dataChan = s; file = f; }
     	public void run () {
+		// Vyshali: Write the bytes to the socket
+    		try {
+				Socket xfer = dataChan.accept(); // Listens for a connection to be made to this socket and accepts it. The method blocks until a connection is made. Returns the new Socket
+				OutputStream os = xfer.getOutputStream(); // an output stream for writing bytes to this socket.
+				byte[] buf = new byte[512];
+				int nbytes = file.read(buf,0,512);
+				while(nbytes>0) {
+					os.write(buf, 0, nbytes);
+					nbytes = file.read(buf, 0, nbytes);
+				}
+				file.close();
+				os.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     }
 ```
@@ -119,6 +135,18 @@ Socket xfer = new Socket(serverAddress, serverSocket.getPort());
 ```
 This piece of code actually establishes a socket connection to the server for the data channel. Once we established that data channel, we then trasnfer the contents of the file.
 ```
+FileOutputStream f = new FileOutputStream(inputs[1]);
+Socket xfer = new Socket(serverAddress, serverSocket.getPort());
+//Vyshali: reading bytes from socket
+InputStream is = xfer.getInputStream(); //an input stream for reading bytes from this socket.
+byte[] buf = new byte[512];
+int nbytes = is.read(buf,0,512);
+while(nbytes > 0) {
+	f.write(buf,0,nbytes);
+	nbytes = is.read(buf,0,512);
+}
+f.close();
+is.close();
 ```
 
 ### Difficulties Faced During Development
@@ -131,15 +159,75 @@ client side :
 * In active mode, we will contact a server saying, i want to do a file transfer, connect back to me to establish a data channel, and then transfer the file. 
 * So before I do that I need to first of all establish a thread, that will then listen for the servers connection request. 
 * Why do I have to fork a thread to do this, well I will need to have somebody listening at the clients side when i do a get operation.
+```
+FileOutputStream f = new FileOutputStream(inputs[1]);
+new Thread(new GetThread(dataChan, f)).start();
+svr.get(inputs[1]);
+```
 * So the server as soon as it gets the GET invocation, as part of executing GET, it will then try to establish a connection to the client, so the client needs to have somebody else back at home base listening for that connection request. So before i talk to the server, i fork a thread. 
 * In active mode, we open a file in the local file system to be written as we get the data from the server. We fork a thread, this thread is going to listen for connection request from the server, when it gets connection request from the server, it will start reading the file contents off of that data channel and write it out to local disk in its file f. 
 * Thread - client, accepting the connection request from the server and then downloading the contents of the file using read operations on the underlying input stream, reading contents of the file and writing it out to a file.  
+```
+private static class GetThread implements Runnable {
+	/*
+	 * This client-side thread runs when the server is active mode and a
+	 * file download is initiated. This thread listens for a connection
+	 * request from the server. The client-side server socket (...)
+	 * should have been created when the port command put the server in
+	 * active mode.
+	 */
+	private ServerSocket dataChan = null;
+	private FileOutputStream file = null;
+
+	public GetThread(ServerSocket s, FileOutputStream f) {
+		dataChan = s;
+		file = f;
+	}
+
+	public void run() {
+		try {
+			/*
+			 * TODO: Complete this thread.
+			 */
+			// Vyshali: Reading bytes from the socket
+			Socket xfer = dataChan.accept();
+			InputStream is = xfer.getInputStream();
+			byte[] buf = new byte[512];
+			int nbytes = is.read(buf,0,512);
+			while(nbytes > 0) {
+				file.write(buf,0,nbytes);
+				nbytes = is.read(buf,0,512);
+			}
+			file.close();
+			is.close();
+			/*
+			 * End TODO
+			 */
+		} catch (IOException e) {
+			msg("Exception: " + e);
+			e.printStackTrace();
+		}
+	}
+}
+```
 * Now we can go ahead and tell the server, Ok now you need to make a connection request to me, and start transfering contents of the file. 
 Server Side:
 * If the server is in active mode, server makes the connection request to the client using the client socket address that was provided as part of the PORT operation, which we should have used before this, to put the server in active mode. 
 * So in Active Mode the Server knows the client socket address to connect to. Here is where it establishes that connection.
 ```
-Socket xfer = new Socket (clientSocket.getAddress(), clientSocket.getPort());
+if (mode == Mode.ACTIVE) {
+	Socket xfer = new Socket (clientSocket.getAddress(), clientSocket.getPort());
+	OutputStream os = new FileOutputStream(path()+file);
+	InputStream is = xfer.getInputStream();
+	byte[] buf = new byte[512];
+	int nbytes = is.read(buf,0,512);
+	while(nbytes > 0) {
+		os.write(buf,0,nbytes);
+		nbytes = is.read(buf,0,512);
+	}
+	is.close();
+	os.close();
+} 
 ```
 * Once this is done it opens the file for input on a local server disk and starts transferring the content from the input file to the output stream that underlies this socket connection. 
 
